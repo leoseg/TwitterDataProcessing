@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TwitterHashtagCount {
@@ -16,5 +16,5 @@ public class TwitterHashtagCount {
 
     @Getter
     @Setter
-    HashMap<String, Integer> meta;
+    Map<String, Integer> meta;
 }

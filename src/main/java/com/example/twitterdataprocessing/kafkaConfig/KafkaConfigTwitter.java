@@ -28,10 +28,10 @@ public class KafkaConfigTwitter {
     private String groupId;
 
     /**
-     * Creates consumerfactory for creating consumer instances that deserialize
-     * payloads from messages of PredictIt-topic from kafka brooker
+     * Creates consumer factory for creating consumer instances that deserialize
+     * payloads from messages of twitter_count-topic from kafka broker
      *
-     * @return consumferfactory
+     * @return consumer factory
      */
     @Bean
     @Lazy
@@ -60,7 +60,7 @@ public class KafkaConfigTwitter {
     /**
      * Creates listener container for each method annotated with @kafkalistener
      * for handling the connection to the kafka broker
-     * provide multi threaded consumption
+     * provide multithreaded consumption
      *
      * @return listenercontainerfactory
      */
