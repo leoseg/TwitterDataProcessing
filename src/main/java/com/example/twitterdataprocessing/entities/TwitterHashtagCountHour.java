@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Class for mapping the results of Twitter api query, maps to an entry of the count of hashtags of one hour
+ * from start to end
+ */
 public class TwitterHashtagCountHour {
 
 

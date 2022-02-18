@@ -1,12 +1,10 @@
 package com.example.twitterdataprocessing.kafkaConsumerTests;
 
-import com.example.twitterdataprocessing.entities.TwitterHashtagCount;
-import com.example.twitterdataprocessing.entities.TwitterHashtagCountHour;
+import com.example.twitterdataprocessing.entities.TwitterHashtagCountWeek;
 import com.example.twitterdataprocessing.helpClasses.JsonDataBuilder;
 import com.example.twitterdataprocessing.kafkaConsumer.TwitterConsumer;
-import com.example.twitterdataprocessing.services.TwitterService;
+import com.example.twitterdataprocessing.services.TwitterLogManager;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
@@ -42,7 +40,7 @@ import static org.mockito.Mockito.verify;
 public class TwitterConsumerTests {
 
     @MockBean
-    TwitterService twitterService;
+    TwitterLogManager twitterLogManager;
 
     @Resource
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -66,7 +64,7 @@ public class TwitterConsumerTests {
     @Resource
     private TwitterConsumer twitterConsumer;
 
-    private TwitterHashtagCount testTwitterHashtagCount;
+    private TwitterHashtagCountWeek testTwitterHashtagCountWeek;
 
 
     @Test
@@ -75,12 +73,12 @@ public class TwitterConsumerTests {
         int tweet_count = 350;
         int numberHours = 6;
         jsonDataBuilder.buildTwitterHashtagCountJson(numberHours, tweet_count);
-        ArgumentCaptor<TwitterHashtagCount> argumentCaptor = ArgumentCaptor.forClass(TwitterHashtagCount.class);
+        ArgumentCaptor<TwitterHashtagCountWeek> argumentCaptor = ArgumentCaptor.forClass(TwitterHashtagCountWeek.class);
         kafkaTemplate.send("twittercount.test",jsonDataBuilder.getJsonStringOfObject());
         Thread.sleep(5000);
 
-        verify(twitterService,times(1)).saveTwitterHashtagCountLog();
-        verify(twitterService,times(1)).setTwitterHashtagCountLog(eq("twittercount.test"),argumentCaptor.capture());
+        verify(twitterLogManager,times(1)).saveTwitterHashtagCountLog();
+        verify(twitterLogManager,times(1)).setTwitterHashtagCountLog(eq("twittercount.test"),argumentCaptor.capture());
         assert(argumentCaptor.getValue().getData().get(0).getTweet_count()==200);
         assert(argumentCaptor.getValue().getData().get(numberHours ).getTweet_count()==350);
         assert(Objects.equals(argumentCaptor.getValue().getData().get(numberHours ).getEnd(), LocalDateTime.of(2022, 2, 17, 16, 0)));

@@ -1,6 +1,6 @@
 package com.example.twitterdataprocessing.kafkaConfig;
 
-import com.example.twitterdataprocessing.entities.TwitterHashtagCount;
+import com.example.twitterdataprocessing.entities.TwitterHashtagCountWeek;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +35,7 @@ public class KafkaConfigTwitter {
      */
     @Bean
     @Lazy
-    public ConsumerFactory<String, TwitterHashtagCount> consumerFactory() {
+    public ConsumerFactory<String, TwitterHashtagCountWeek> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -50,7 +50,7 @@ public class KafkaConfigTwitter {
                 ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
                 JsonDeserializer.class);
         props.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
-        JsonDeserializer<TwitterHashtagCount> deserializer = new JsonDeserializer<>(TwitterHashtagCount.class);
+        JsonDeserializer<TwitterHashtagCountWeek> deserializer = new JsonDeserializer<>(TwitterHashtagCountWeek.class);
         deserializer.setRemoveTypeHeaders(false);
         deserializer.addTrustedPackages("*");
         deserializer.setUseTypeMapperForKey(true);
@@ -66,10 +66,10 @@ public class KafkaConfigTwitter {
      */
     @Bean(value = "twitterListener")
     @Lazy
-    public ConcurrentKafkaListenerContainerFactory<String, TwitterHashtagCount>
+    public ConcurrentKafkaListenerContainerFactory<String, TwitterHashtagCountWeek>
     kafkaListenerContainerFactory() {
 
-        ConcurrentKafkaListenerContainerFactory<String, TwitterHashtagCount> factory =
+        ConcurrentKafkaListenerContainerFactory<String, TwitterHashtagCountWeek> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setBatchListener(true);
